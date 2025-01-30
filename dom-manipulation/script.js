@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () =>{
     function addQuote(){
         const newQuoteText = document.getElementById("newQuoteText");
         const newQuoteCategory = document.getElementById("newQuoteCategory");
-
+        
         const quoteText = newQuoteText.value.trim();
         const quoteCategory = newQuoteCategory.value.trim();
 
@@ -40,21 +40,43 @@ document.addEventListener("DOMContentLoaded", () =>{
         quotes.push({text: quoteText, category: quoteCategory});
         newQuoteText.value = "";
         newQuoteCategory.value = "";
-        createAddQuoteForm()
         alert("Quote added succefully!");
         showRandomQuote();
     }
+    if (newQuoteBtn){
+        newQuoteBtn.addEventListener("click", showRandomQuote);
+    }
 
-    newQuoteBtn.addEventListener("click", showRandomQuote);
+    //creating and input field dynamically using the createElement and appendChild
+    const quoteInputDiv = document.createElement("div");
 
-    document.body.insertAdjacentHTML("beforeend", `
-    <div>
-        <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
-        <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
-        <button id="addQuoteButton">Add Quote</button>
-    </div>
+    const quoteInput = document.createElement("input");
+    quoteInput.id = "newQuoteText";
+    quoteInput.type = "text";
+    quoteInput.placeholder = "Enter a quote"; 
+    quoteInputDiv.appendChild(quoteInput); 
+
+    const categoryInput = document.createElement("input");
+    categoryInput.id = "newQuoteCategory";
+    categoryInput.type = "text";
+    categoryInput.placeholder = "Enter a catergory"; 
+    quoteInputDiv.appendChild(categoryInput);
+
+    const addQuoteButton = document.createElement("button");
+    addQuoteButton.id = "addQuoButton";
+    addQuoteButton.innerText = "Add Quote"
+    addQuoteButton.addEventListener("click", addQuote);
+    quoteInputDiv.appendChild(addQuoteButton);
+   
+//     document.body.insertAdjacentHTML("beforeend", `
+//     <div>
+//         <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+//         <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+//         <button id="addQuoteButton">Add Quote</button>
+//     </div>
   
-  `); 
-  document.getElementById("addQuoteButton").addEventListener("click", addQuote);
+//   `); 
+//   document.getElementById("addQuoteButton").addEventListener("click", addQuote);
+document.body.appendChild(quoteInputDiv);
   showRandomQuote();
 });
