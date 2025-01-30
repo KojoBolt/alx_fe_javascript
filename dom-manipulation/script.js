@@ -43,12 +43,10 @@ document.addEventListener("DOMContentLoaded", () =>{
         alert("Quote added succefully!");
         showRandomQuote();
     }
-    if (newQuoteBtn){
-        newQuoteBtn.addEventListener("click", showRandomQuote);
-    }
 
     //creating and input field dynamically using the createElement and appendChild
-    const quoteInputDiv = document.createElement("div");
+    function createAddQuoteForm() {
+        const quoteInputDiv = document.createElement("div");
 
     const quoteInput = document.createElement("input");
     quoteInput.id = "newQuoteText";
@@ -67,7 +65,9 @@ document.addEventListener("DOMContentLoaded", () =>{
     addQuoteButton.innerText = "Add Quote"
     addQuoteButton.addEventListener("click", addQuote);
     quoteInputDiv.appendChild(addQuoteButton);
-   
+    document.body.appendChild(quoteInputDiv);
+    }
+       
 //     document.body.insertAdjacentHTML("beforeend", `
 //     <div>
 //         <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
@@ -77,6 +77,9 @@ document.addEventListener("DOMContentLoaded", () =>{
   
 //   `); 
 //   document.getElementById("addQuoteButton").addEventListener("click", addQuote);
-document.body.appendChild(quoteInputDiv);
+if (newQuoteBtn){
+    newQuoteBtn.addEventListener("click", showRandomQuote);
+}
+createAddQuoteForm()// I call a funtion to create the form
   showRandomQuote();
 });
