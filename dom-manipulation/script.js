@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () =>{
     function addQuote(){
         const newQuoteText = document.getElementById("newQuoteText");
         const newQuoteCategory = document.getElementById("newQuoteCategory");
-        
+
         const quoteText = newQuoteText.value.trim();
         const quoteCategory = newQuoteCategory.value.trim();
 
@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () =>{
         quotes.push({text: quoteText, category: quoteCategory});
         newQuoteText.value = "";
         newQuoteCategory.value = "";
+        createAddQuoteForm()
         alert("Quote added succefully!");
         showRandomQuote();
     }
