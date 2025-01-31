@@ -76,15 +76,12 @@ document.addEventListener("DOMContentLoaded", () =>{
     document.body.appendChild(quoteInputDiv);
     }
 
-    function exportToJsonFile() {
-        const jsonBlob = new Blob([JSON.stringify(quotes, null, 2)], { type: "application/json" });
-        const url = URL.createObjectURL(jsonBlob);
+    function exportToJson() {
+        const jsonBlob = new Blob([JSON.stringify(quotes, null, 2)], {type: "application/json"});
+        const url =URL.createObjectURL(jsonBlob);
         const a = document.createElement("a");
-        a.href = url;
-        a.download = "quotes.json"; 
-        document.body.appendChild(a);
         a.click();
-        document.body.removeChild(a); 
+        document.body.appendChild(a);
         URL.revokeObjectURL(url);
     }
 
@@ -108,13 +105,13 @@ document.addEventListener("DOMContentLoaded", () =>{
     }
 
     function createImportExportButtton(){
-        const exportButtton = document.createElement("button");
-        exportButtton.innerText = "Export Quotes";
-        exportButtton.addEventListener("click", exportToJson);
-        document.body.appendChild(exportButtton);
+        const exportBtn = document.createElement("button");
+        exportBtn.innerText = "Export Quotes";
+        exportBtn.addEventListener("click", exportToJson);
+        document.body.appendChild(exportBtn);
 
         const importInput = document.createElement("input");
-        importInput.type = "file";
+        importInput.input = "file";
         importInput.accept = ".json";
         importInput.addEventListener("change", importFromJsonFile);
         document.body.appendChild(importInput);
