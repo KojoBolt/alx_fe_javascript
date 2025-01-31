@@ -105,10 +105,10 @@ document.addEventListener("DOMContentLoaded", () =>{
     }
 
     function createImportExportButtton(){
-        const exportBtn = document.createElement("button");
-        exportBtn.innerText = "Export Quotes (JSON)";
-        exportBtn.addEventListener("click", exportToJson);
-        document.body.appendChild(exportBtn);
+        const exportButtton = document.createElement("button");
+        exportButtton.innerText = "Export Quotes (JSON)";
+        exportButtton.addEventListener("click", exportToJson);
+        document.body.appendChild(exportButtton);
 
         const importInput = document.createElement("input");
         importInput.input = "file";
