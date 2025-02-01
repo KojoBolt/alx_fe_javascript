@@ -21,6 +21,37 @@ document.addEventListener("DOMContentLoaded", () =>{
         localStorage.setItem(localStorageKey, JSON.stringify(quotes))
     }
 
+//filter optios 
+
+function populateCategories() {
+    const catergoryFilter = document.getElementById("category");
+    catergoryFilter.innerHTML = `<option value="all">All Categories</option>`;
+
+    const uniqueCategories = [...new set(quotes.map(quotes => quotes.category))];
+    uniqueCategories.forEach(category => {
+        const option = document.createElement("option");
+        option.value = category;
+        option.textContent = category;
+        catergoryFilter.appendChild(option);
+    });
+
+    //Remember the Last Selected Filter
+
+    const lastSelectedCategory = localStorage.getItem("selectedCategory") || "all";
+    catergoryFilter.value = lastSelectedCategory;
+}
+function filterQuotes() {
+    const selectedCategory = document.getElementById("categoryFilter").value;
+    localStorage.setItem("selectedCategory", selectedCategory);
+
+    let filteredQuotes = selectedCategory === "all" ? quotes : quotes.filter(q => q.category === selectedCategory);
+
+    const quoteDisplay = document.getElementById("quoteDisplay");
+    quoteDisplay.innerHTML = filterQuotes.length
+    ? filteredQuotes.map(q => `<p><b>${q.category}</b>: ${q.text}</p>`).join("")
+    : "<p>No quotes available for this category.</p>";
+
+}
     //passing funtion 
 
     function showRandomQuote (){
@@ -34,8 +65,8 @@ document.addEventListener("DOMContentLoaded", () =>{
     }
 
     function addQuote(){
-        const newQuoteText = document.getElementById("newQuoteText");
-        const newQuoteCategory = document.getElementById("newQuoteCategory");
+        const newQuoteText = document.getElementById("newQuoteText").value.trim();
+        const newQuoteCategory = document.getElementById("newQuoteCategory").value.trim();
         
         const quoteText = newQuoteText.value.trim();
         const quoteCategory = newQuoteCategory.value.trim();
@@ -49,7 +80,9 @@ document.addEventListener("DOMContentLoaded", () =>{
         newQuoteText.value = "";
         newQuoteCategory.value = "";
         alert("Quote added succefully!");
-        showRandomQuote();
+        // showRandomQuote(); 
+         populateCategories();  
+        filterQuotes();  
     }
 
     //creating and input field dynamically using the createElement and appendChild
