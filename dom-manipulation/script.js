@@ -185,6 +185,20 @@ document.addEventListener("DOMContentLoaded", () => {
         };
         fileReader.readAsText(event.target.files[0]);
     }
+    function fetchQuotesFromServer() {
+        const quoteDisplay = document.getElementById("quoteDisplay");
+        
+        if (!quotes || quotes.length === 0) {
+            quoteDisplay.innerHTML = "<p>No quotes available.</p>";
+            return;
+        }
+        
+        quoteDisplay.innerHTML = quotes.map(q => `<p><b>${q.category}</b>: ${q.text}</p>`).join("");
+    }
+    
+    // Call the function after defining it
+    fetchQuotesFromServer();
+    
 
     // Initialize UI
     if (newQuoteBtn) {
