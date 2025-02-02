@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () =>{
 
     //display quote ui
 
-    function displayQuotes() {
+    function fetchQuotesFromServer() {
         const quoteDisplay = document.getElementById("quoteDisplay");
         quoteDisplay.innerHTML = quote.map(q => `<p><b>${q.category}</b>:${q.text}</p>`).join("") || "<p> no quotes available"
     }
