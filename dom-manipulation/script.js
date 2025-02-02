@@ -21,6 +21,70 @@ document.addEventListener("DOMContentLoaded", () =>{
         localStorage.setItem(localStorageKey, JSON.stringify(quotes))
     }
 
+    // fetch quote from the server and updates from local stotage
+    const apiUrl = "https://jsonplaceholder.typicode.com/posts";
+    let quote =JSON.parse(localStorage.getItem("quotes")) || [];
+    async function synQuotesWithServer() {
+        try{
+            const response = await fetch(apiUrl);
+            const serverQuotes = await response.json();
+
+            if (!serverQuotes || serverQuotes.length === 0){
+                console.warn("No new quotes for the server.");
+                return;
+            }
+
+            let localQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
+
+            // merge and handle conflits 
+            let updatesQuotes = mergeQuotes(localQuotes, serverQuotes);
+
+            //save to local storage
+            localStorage.setItem("quotes", JSON.stringify(updatesQuotes));
+
+            console.log("Quotes synced successfully!");
+            displayQuotes(); // refress ui
+
+        } catch (error) {
+            console.log("Error syncing quotes:", error);
+        }
+        
+    }
+
+    function mergeQuotes (local, server) {
+        const localMap = new Map(local.map(q => [q.id, q]));
+        server.forEach(q => {
+            if (!localMap.has(q.id) || localMap.get(q.id).updatedAt < q.updatedAt){
+                localMap.set(q.id,q);
+            }
+        });
+        return Array.from(localMap.values());
+            
+        }
+    }
+
+    setInterval(synQuotesWithServer, 1000);
+
+    //display quote ui
+
+    function displayQuotes() {
+        const quoteDisplay = document.getElementById("quoteDisplay");
+        quoteDisplay.innerHTML = quote.map(q => `<p><b>${q.category}</b>:${q.text}</p>`).join("") || "<p> no quotes available"
+    }
+
+    function addQuote (text, catergory){
+        const newQuote = {
+            id:Date.now(),
+            text,
+            catergory,
+            updatedAt: new Date().toISOString()
+        };
+    
+        quote.parse(newQuote);
+        localStorage.setItem("quotes", JSON.stringify(quotes));
+        displayQuotes();
+    }
+
 //filter optios 
 
 function populateCategories() {
@@ -174,3 +238,5 @@ if (lastViewedQuote) {
 }
   showRandomQuote();
 });
+displayQuotes();
+syncQuotesWithServer();
