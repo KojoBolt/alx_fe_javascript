@@ -54,10 +54,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return Array.from(localMap.values());
     }
 
-    // Periodically check for new quotes from the server every 5 seconds
+    // this check every 5 secs
     setInterval(syncQuotesWithServer, 5000);
 
-    // Function to send new quotes to the server (POST request)
+    // POST request
     async function postQuoteToServer(quote) {
         try {
             const response = await fetch(apiUrl, {
@@ -194,6 +194,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         quoteDisplay.innerHTML = quotes.map(q => `<p><b>${q.category}</b>: ${q.text}</p>`).join("");
+        if (notification) {
+            notification.innerText = "Quotes synced with server!";
+            notification.style.display = "block";
+        }
     }
     
     // Call the function after defining it
