@@ -46,20 +46,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
     function populateCategories() {
-        const categoryFilter = document.getElementById("categoryFilter");
-        if (!categoryFilter) return;
+        const catergoryFilter = document.getElementById("category");
+        catergoryFilter.innerHTML = `<option value="all">All Categories</option>`;
     
-        const uniqueCategories = [...new Set(quotes.map(q => q.category))];
-    
-        categoryFilter.innerHTML = `<option value="all">All</option>` +
-            uniqueCategories.map(category => `<option value="${category}">${category}</option>`).join("");
-    
-        // Restore last selected category
-        const savedCategory = localStorage.getItem("selectedCategory");
-        if (savedCategory) {
-            categoryFilter.value = savedCategory;
-        }
-    }
+        const uniqueCategories = [...new set(quotes.map(quotes => quotes.category))];
+        uniqueCategories.forEach(category => {
+            const option = document.createElement("option");
+            option.value = category;
+            option.textContent = category;
+            catergoryFilter.appendChild(option);
+        });
     document.getElementById("categoryFilter").addEventListener("change", filterQuote);
 
     function filterQuote() {
