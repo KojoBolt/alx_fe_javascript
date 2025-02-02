@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const localStorageKey = "quotesStorage";
     const sessionStorageKey = "lastViewedQuote";
     const apiUrl = "https://jsonplaceholder.typicode.com/posts"; 
+    populateCategories(); 
+    filterQuote();
 
     // Load quotes from local storage or set defaults
     let quotes = JSON.parse(localStorage.getItem(localStorageKey)) || [
@@ -43,6 +45,38 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error syncing quotes:", error);
         }
     }
+    function populateCategories() {
+        const categoryFilter = document.getElementById("categoryFilter");
+        if (!categoryFilter) return;
+    
+        const uniqueCategories = [...new Set(quotes.map(q => q.category))];
+    
+        categoryFilter.innerHTML = `<option value="all">All</option>` +
+            uniqueCategories.map(category => `<option value="${category}">${category}</option>`).join("");
+    
+        // Restore last selected category
+        const savedCategory = localStorage.getItem("selectedCategory");
+        if (savedCategory) {
+            categoryFilter.value = savedCategory;
+        }
+    }
+    document.getElementById("categoryFilter").addEventListener("change", filterQuote);
+
+    function filterQuote() {
+        const categoryFilter = document.getElementById("categoryFilter");
+        const quoteDisplay = document.getElementById("quoteDisplay");
+        if (!categoryFilter || !quoteDisplay) return;
+    
+        const selectedCategory = categoryFilter.value;
+        localStorage.setItem("selectedCategory", selectedCategory); // Save category
+    
+        const filteredQuotes = selectedCategory === "all"
+            ? quotes
+            : quotes.filter(q => q.category === selectedCategory);
+    
+        quoteDisplay.innerHTML = filteredQuotes.map(q => `<p><b>${q.category}</b>: ${q.text}</p>`).join("");
+    }
+    
 
     function mergeQuotes(local, server) {
         const localMap = new Map(local.map(q => [q.id, q]));
